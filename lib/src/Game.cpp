@@ -22,6 +22,15 @@ void Game::drawGrid() {
     for (int i = 0; i <= GRID_SIZE; ++i) {
         SDL_RenderDrawLine(renderer, i * CELL_SIZE, 0, i * CELL_SIZE, SCREEN_SIZE);
         SDL_RenderDrawLine(renderer, 0, i * CELL_SIZE, SCREEN_SIZE, i * CELL_SIZE);
+
+        // draw thicker lines to distinguish 3x3 boxes
+        if (i % 3 == 0) {
+            SDL_Rect vertLine = {i * CELL_SIZE, 0, 5, SCREEN_SIZE};
+            SDL_RenderFillRect(renderer, &vertLine);
+
+            SDL_Rect horizLine = {0, i * CELL_SIZE, SCREEN_SIZE, 5};
+            SDL_RenderFillRect(renderer, &horizLine);
+        }
     }
 
     SDL_RenderPresent(renderer);
