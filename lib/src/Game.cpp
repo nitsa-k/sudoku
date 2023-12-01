@@ -40,38 +40,35 @@ void Game::fillBox(int row, int col) {
 }
 
 bool Game::rowContains(int row, int num) {
-    bool value = false;
     for (int col = 0; col < GRID_SIZE; col++) {
-        if (grid[row][col] == num) value = true;
+        if (grid[row][col] == num) return true;
     }
-    return value;
+    return false;
 }
 
 bool Game::colContains(int col, int num) {
-    bool value = false;
     for (int row = 0; row < GRID_SIZE; row++) {
-        if (grid[row][col] == num) value = true;
+        if (grid[row][col] == num) return true;
     }
-    return value;
+    return false;
 }
 
 bool Game::boxContains(int row, int col, int num) {
-    bool value = false;
-
     // find the top left of the box that grid[row][col] is in
     int topRow = (int) ((row / sqrt(GRID_SIZE)) * sqrt(GRID_SIZE));
     int leftCol = (int) ((col / sqrt(GRID_SIZE)) * sqrt(GRID_SIZE));
 
     for (int i = 0; i < sqrt(GRID_SIZE); i++) {
         for (int j = 0; j < sqrt(GRID_SIZE); j++) {
-            if(grid[topRow + i][leftCol + j] == num) value = true;
+            if (grid[topRow + i][leftCol + j] == num) return true;
         }
     }
 
-    return value;
+    return false;
 }
 
 void Game::fillRest() {
+    // uses a backtracking algorithm to fill the rest of the grid
     for (int row = 0; row < GRID_SIZE; row++) {
         for (int col = 0; col < GRID_SIZE; col++) {
             for (int num = 1; num <= GRID_SIZE; num++) {
