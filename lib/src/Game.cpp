@@ -88,11 +88,11 @@ void Game::initGrid() {
 
 void Game::drawGrid() {
     // make the whole screen white
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 249, 222, 234, 225);
     SDL_RenderClear(renderer);
 
     // set color to black to draw the grid
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 204, 139, 134, 255);
 
     // draw the sudoku grid
     for (int i = 0; i <= GRID_SIZE; ++i) {
@@ -114,7 +114,7 @@ void Game::drawGrid() {
         for (int col = 0; col < GRID_SIZE; col++) {
             if (grid[row][col] != 0) {
                 std::string val = std::to_string(grid[row][col]);
-                SDL_Color textColor = {0, 0, 0};
+                SDL_Color textColor = {204, 139, 134};
                 SDL_Surface *surfaceMessage = TTF_RenderText_Solid(font, val.c_str(), textColor);
                 SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
                 SDL_Rect messageRect = {col * CELL_SIZE + CELL_SIZE / 4, row * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2,
