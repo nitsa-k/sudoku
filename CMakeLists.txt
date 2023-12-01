@@ -3,7 +3,6 @@ project(sudoku)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Must set the path to the main.cpp, for example: scripts/main.cpp if it is inside a folder
 add_executable(${PROJECT_NAME} main.cpp lib/include/Game.h lib/src/Game.cpp)
 
 # --- SDL2 SETUP ---
