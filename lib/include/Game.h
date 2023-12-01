@@ -8,6 +8,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include "Cell.h"
+
 #include <array>
 
 #define GRID_SIZE 9     // must be a perfect square - 9 for standard sudoku
@@ -20,7 +22,7 @@ private:
     SDL_Renderer *renderer;
     TTF_Font *font;
 
-    int grid[GRID_SIZE][GRID_SIZE];
+    Cell grid[GRID_SIZE][GRID_SIZE];
 
     int selectedRow;
     int selectedCol;
@@ -30,15 +32,15 @@ public:
 
     void fillBox(int row, int col);
 
-    bool rowContains(int row, int num, int checkGrid[GRID_SIZE][GRID_SIZE]);
+    bool rowContains(int row, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool colContains(int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]);
+    bool colContains(int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool boxContains(int row, int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]);
+    bool boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
     bool findEmpty(int &row, int &col);
 
-    bool fillRest(int checkGrid[GRID_SIZE][GRID_SIZE]);
+    bool fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
     bool solvable();
 

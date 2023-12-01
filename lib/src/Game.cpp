@@ -39,34 +39,34 @@ void Game::fillBox(int row, int col) {
 
     for (int i = 0; i < sqrt(GRID_SIZE); i++) {
         for (int j = 0; j < sqrt(GRID_SIZE); j++) {
-            grid[i + row][j + col] = nums.back();
+            grid[i + row][j + col].setValue(nums.back());
             nums.pop_back();
         }
     }
 }
 
-bool Game::rowContains(int row, int num, int checkGrid[GRID_SIZE][GRID_SIZE]) {
+bool Game::rowContains(int row, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
     for (int col = 0; col < GRID_SIZE; col++) {
-        if (checkGrid[row][col] == num) return true;
+        if (checkGrid[row][col].getValue() == num) return true;
     }
     return false;
 }
 
-bool Game::colContains(int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]) {
+bool Game::colContains(int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
     for (int row = 0; row < GRID_SIZE; row++) {
-        if (checkGrid[row][col] == num) return true;
+        if (checkGrid[row][col].getValue() == num) return true;
     }
     return false;
 }
 
-bool Game::boxContains(int row, int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]) {
+bool Game::boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
     // find the top left of the box that grid[row][col] is in
     int topRow = (row / (int) (sqrt(GRID_SIZE))) * (int) (sqrt(GRID_SIZE));
     int leftCol = (col / (int) (sqrt(GRID_SIZE))) * (int) (sqrt(GRID_SIZE));
 
     for (int i = 0; i < static_cast<int>(sqrt(GRID_SIZE)); i++) {
         for (int j = 0; j < static_cast<int>(sqrt(GRID_SIZE)); j++) {
-            if (checkGrid[topRow + i][leftCol + j] == num) {
+            if (checkGrid[topRow + i][leftCol + j].getValue() == num) {
                 return true;
             }
         }
@@ -79,13 +79,13 @@ bool Game::boxContains(int row, int col, int num, int checkGrid[GRID_SIZE][GRID_
 bool Game::findEmpty(int &row, int &col) {
     for (row = 0; row < GRID_SIZE; row++) {
         for (col = 0; col < GRID_SIZE; col++) {
-            if (grid[row][col] == 0) return true;
+            if (grid[row][col].getValue() == 0) return true;
         }
     }
     return false;
 }
 
-bool Game::fillRest(int checkGrid[GRID_SIZE][GRID_SIZE]) {
+bool Game::fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
     // uses a backtracking algorithm to fill the rest of the grid
     int row, col;
 
@@ -96,9 +96,9 @@ bool Game::fillRest(int checkGrid[GRID_SIZE][GRID_SIZE]) {
     for (int num = 1; num <= GRID_SIZE; num++) {
         if (!rowContains(row, num, checkGrid) && !colContains(col, num, checkGrid) &&
             !boxContains(row, col, num, checkGrid)) {
-            checkGrid[row][col] = num;
+            checkGrid[row][col].setValue(num);
             if (fillRest(checkGrid)) return true;
-            checkGrid[row][col] = 0;
+            checkGrid[row][col].setValue(0);
         }
     }
 
@@ -108,11 +108,11 @@ bool Game::fillRest(int checkGrid[GRID_SIZE][GRID_SIZE]) {
 
 bool Game::solvable() {
     // create a copy so the grid is not edited
-    int copy[GRID_SIZE][GRID_SIZE];
+    Cell copy[GRID_SIZE][GRID_SIZE];
 
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
-            copy[i][j] = grid[i][j];
+            copy[i][j].setValue(grid[i][j].getValue());
         }
     }
 
@@ -122,7 +122,7 @@ bool Game::solvable() {
 void Game::initGrid() {
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
-            grid[i][j] = 0;
+            grid[i][j].setValue(0);
         }
     }
 
@@ -141,9 +141,9 @@ void Game::initGrid() {
         int row = rand() % GRID_SIZE;
         int col = rand() % GRID_SIZE;
 
-        if (grid[row][col] != 0) {
-            int temp = grid[row][col];
-            grid[row][col] = 0;
+        if (grid[row][col].getValue() != 0) {
+            Cell temp = grid[row][col];
+            grid[row][col].setValue(0);
 
             if (!solvable()) {
                 grid[row][col] = temp;
@@ -161,7 +161,7 @@ void Game::selectBox(int x, int y) {
 
 void Game::typeNum(SDL_Keycode key) {
     if (selectedRow != -1 && selectedCol != -1 && key >= SDLK_1 && key <= SDLK_9) {
-        grid[selectedRow][selectedCol] = key - SDLK_0;
+        grid[selectedRow][selectedCol].setValue(key - SDLK_0);
     }
 }
 
@@ -191,8 +191,8 @@ void Game::drawGrid() {
     // draw the numbers
     for (int row = 0; row < GRID_SIZE; row++) {
         for (int col = 0; col < GRID_SIZE; col++) {
-            if (grid[row][col] != 0) {
-                std::string val = std::to_string(grid[row][col]);
+            if (grid[row][col].getValue() != 0) {
+                std::string val = std::to_string(grid[row][col].getValue());
                 SDL_Color textColor = {204, 139, 134};
                 SDL_Surface *surfaceMessage = TTF_RenderText_Solid(font, val.c_str(), textColor);
                 SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -203,6 +203,13 @@ void Game::drawGrid() {
                 SDL_FreeSurface(surfaceMessage);
             }
         }
+    }
+
+    // draw selected cell
+    if (selectedRow != -1 && selectedCol != -1) {
+        SDL_SetRenderDrawColor(renderer, 70, 130, 180, 255);
+        SDL_Rect selected = {selectedCol * CELL_SIZE, selectedRow * CELL_SIZE, CELL_SIZE, CELL_SIZE};
+        SDL_RenderDrawRect(renderer, &selected);
     }
 
     SDL_RenderPresent(renderer);
