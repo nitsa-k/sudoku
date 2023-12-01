@@ -281,12 +281,12 @@ void Game::run() {
                 }
             } else if (e.type == SDL_KEYDOWN) {
                 typeNum(e.key.keysym.sym);
-                if (checkWin()) {
-                    handleWin();
-                }
             }
         }
 
         drawGrid();
+        if (checkWin()) {
+            handleWin();
+        }
     }
 }
