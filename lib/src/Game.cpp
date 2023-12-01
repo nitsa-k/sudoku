@@ -39,6 +39,35 @@ void Game::fillBox(int row, int col) {
     }
 }
 
+bool Game::rowContains(int row, int num) {
+    bool value = false;
+    for (int col = 0; col < GRID_SIZE; col++) {
+        if (grid[row][col] == num) value = true;
+    }
+    return value;
+}
+
+bool Game::colContains(int col, int num) {
+    bool value = false;
+    for (int row = 0; row < GRID_SIZE; row++) {
+        if (grid[row][col] == num) value = true;
+    }
+    return value;
+}
+
+void Game::fillRest() {
+    for (int row = 0; row < GRID_SIZE; row++) {
+        for (int col = 0; col < GRID_SIZE; col++) {
+            for (int num = 1; num <= GRID_SIZE; num++) {
+                if (!rowContains(row, num) && !colContains(col, num)) {
+                    grid[row][col] = num;
+                    break;
+                }
+            }
+        }
+    }
+}
+
 void Game::initGrid() {
     // for now, just randomly generates a complete (valid) sudoku grid
     // TODO: design a method to remove some numbers such that the game is playable
@@ -53,6 +82,8 @@ void Game::initGrid() {
     for (int i = 0; i < GRID_SIZE; i += (int) sqrt(GRID_SIZE)) {
         fillBox(i, i);
     }
+
+    fillRest();
 }
 
 void Game::drawGrid() {
