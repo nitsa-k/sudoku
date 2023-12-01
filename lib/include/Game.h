@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#define GRID_SIZE 4
+#define GRID_SIZE 9     // must be a perfect square - 9 for standard sudoku
 #define SCREEN_SIZE (750 / GRID_SIZE * GRID_SIZE)
 #define CELL_SIZE (SCREEN_SIZE / GRID_SIZE)
 
@@ -16,9 +16,16 @@ class Game {
 private:
     SDL_Window *window;
     SDL_Renderer *renderer;
+    TTF_Font *font;
+
+    int grid[GRID_SIZE][GRID_SIZE];
 
 public:
     Game();
+
+    void fillBox(int row, int col);
+
+    void initGrid();
 
     void drawGrid();
 
