@@ -23,8 +23,6 @@ Game::Game() {
 
     selectedRow = -1;
     selectedCol = -1;
-
-    initGrid();
 }
 
 void Game::fillBox(int row, int col) {
@@ -123,6 +121,7 @@ void Game::initGrid() {
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
             grid[i][j].setValue(0);
+            grid[i][j].setEditable(false);
         }
     }
 
@@ -227,7 +226,46 @@ void Game::drawGrid() {
     SDL_RenderPresent(renderer);
 }
 
+bool Game::checkWin() {
+    for (int row = 0; row < GRID_SIZE; row++) {
+        for (int col = 0; col < GRID_SIZE; col++) {
+            if (grid[row][col].getValue() == 0) return false;
+            int num = grid[row][col].getValue();
+            grid[row][col].setValue(0);
+            if (rowContains(row, num, grid) || colContains(col, num, grid) || boxContains(row, col, num, grid)) {
+                grid[row][col].setValue(num);
+                return false;
+            }
+            grid[row][col].setValue(num);
+        }
+    }
+    return true;
+}
+
+void Game::handleWin() {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Congratulations!", "You won the game!", window);
+
+    const SDL_MessageBoxButtonData buttons[] = {{0,                                       0, "Exit"},
+                                                {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Play Again"}};
+
+    const SDL_MessageBoxData data = {SDL_MESSAGEBOX_INFORMATION, window, "Exit or Play Again?",
+                                     "Do you want to exit or play again?", SDL_arraysize(buttons), buttons,
+                                     nullptr};
+
+    int choice;
+    SDL_ShowMessageBox(&data, &choice);
+
+    if (choice == 0) {
+        SDL_Quit();
+        exit(0);
+    } else {
+        run();
+    }
+}
+
 void Game::run() {
+    initGrid();
+
     SDL_Event e;
 
     bool exit = false;
@@ -243,6 +281,9 @@ void Game::run() {
                 }
             } else if (e.type == SDL_KEYDOWN) {
                 typeNum(e.key.keysym.sym);
+                if (checkWin()) {
+                    handleWin();
+                }
             }
         }
 

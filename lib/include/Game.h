@@ -52,6 +52,10 @@ public:
 
     void drawGrid();
 
+    bool checkWin();
+
+    void handleWin();
+
     void run();
 };
 
