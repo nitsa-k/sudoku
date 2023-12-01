@@ -31,7 +31,9 @@ public:
 
     bool boxContains(int row, int col, int num);
 
-    void fillRest();
+    bool findEmpty(int &row, int &col);
+
+    bool fillRest();
 
     void initGrid();
 

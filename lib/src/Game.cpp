@@ -55,30 +55,46 @@ bool Game::colContains(int col, int num) {
 
 bool Game::boxContains(int row, int col, int num) {
     // find the top left of the box that grid[row][col] is in
-    int topRow = (int) ((row / sqrt(GRID_SIZE)) * sqrt(GRID_SIZE));
-    int leftCol = (int) ((col / sqrt(GRID_SIZE)) * sqrt(GRID_SIZE));
+    int topRow = (row / (int) (sqrt(GRID_SIZE))) * (int) (sqrt(GRID_SIZE));
+    int leftCol = (col / (int) (sqrt(GRID_SIZE))) * (int) (sqrt(GRID_SIZE));
 
-    for (int i = 0; i < sqrt(GRID_SIZE); i++) {
-        for (int j = 0; j < sqrt(GRID_SIZE); j++) {
-            if (grid[topRow + i][leftCol + j] == num) return true;
+    for (int i = 0; i < static_cast<int>(sqrt(GRID_SIZE)); i++) {
+        for (int j = 0; j < static_cast<int>(sqrt(GRID_SIZE)); j++) {
+            if (grid[topRow + i][leftCol + j] == num) {
+                return true;
+            }
         }
     }
 
     return false;
 }
 
-void Game::fillRest() {
-    // uses a backtracking algorithm to fill the rest of the grid
-    for (int row = 0; row < GRID_SIZE; row++) {
-        for (int col = 0; col < GRID_SIZE; col++) {
-            for (int num = 1; num <= GRID_SIZE; num++) {
-                if (!rowContains(row, num) && !colContains(col, num) && !boxContains(row, col, num)) {
-                    grid[row][col] = num;
-                    break;
-                }
-            }
+bool Game::findEmpty(int &row, int &col) {
+    for (row = 0; row < GRID_SIZE; row++) {
+        for (col = 0; col < GRID_SIZE; col++) {
+            if (grid[row][col] == 0) return true;
         }
     }
+    return false;
+}
+
+bool Game::fillRest() {
+    // uses a backtracking algorithm to fill the rest of the grid
+    int row, col;
+
+    if (!findEmpty(row, col)) {
+        return true;
+    }
+
+    for (int num = 1; num <= GRID_SIZE; num++) {
+        if (!rowContains(row, num) && !colContains(col, num) && !boxContains(row, col, num)) {
+            grid[row][col] = num;
+            if (fillRest()) return true;
+            grid[row][col] = 0;
+        }
+    }
+
+    return false;
 }
 
 void Game::initGrid() {
@@ -96,7 +112,8 @@ void Game::initGrid() {
         fillBox(i, i);
     }
 
-    fillRest();
+    // use a backtracking algorithm to fill the rest of the puzzle
+   if(!fillRest()) std::cerr << "could not generate the grid" << std::cout;
 }
 
 void Game::drawGrid() {
