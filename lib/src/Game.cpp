@@ -18,6 +18,8 @@ Game::Game() {
     TTF_Init();
     font = TTF_OpenFont("../../resources/PlayfairDisplaySemibold.ttf", 25);
 
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    srand(seed);
     initGrid();
 }
 
@@ -39,28 +41,28 @@ void Game::fillBox(int row, int col) {
     }
 }
 
-bool Game::rowContains(int row, int num) {
+bool Game::rowContains(int row, int num, int checkGrid[GRID_SIZE][GRID_SIZE]) {
     for (int col = 0; col < GRID_SIZE; col++) {
-        if (grid[row][col] == num) return true;
+        if (checkGrid[row][col] == num) return true;
     }
     return false;
 }
 
-bool Game::colContains(int col, int num) {
+bool Game::colContains(int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]) {
     for (int row = 0; row < GRID_SIZE; row++) {
-        if (grid[row][col] == num) return true;
+        if (checkGrid[row][col] == num) return true;
     }
     return false;
 }
 
-bool Game::boxContains(int row, int col, int num) {
+bool Game::boxContains(int row, int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]) {
     // find the top left of the box that grid[row][col] is in
     int topRow = (row / (int) (sqrt(GRID_SIZE))) * (int) (sqrt(GRID_SIZE));
     int leftCol = (col / (int) (sqrt(GRID_SIZE))) * (int) (sqrt(GRID_SIZE));
 
     for (int i = 0; i < static_cast<int>(sqrt(GRID_SIZE)); i++) {
         for (int j = 0; j < static_cast<int>(sqrt(GRID_SIZE)); j++) {
-            if (grid[topRow + i][leftCol + j] == num) {
+            if (checkGrid[topRow + i][leftCol + j] == num) {
                 return true;
             }
         }
@@ -68,6 +70,7 @@ bool Game::boxContains(int row, int col, int num) {
 
     return false;
 }
+
 
 bool Game::findEmpty(int &row, int &col) {
     for (row = 0; row < GRID_SIZE; row++) {
@@ -78,7 +81,7 @@ bool Game::findEmpty(int &row, int &col) {
     return false;
 }
 
-bool Game::fillRest() {
+bool Game::fillRest(int checkGrid[GRID_SIZE][GRID_SIZE]) {
     // uses a backtracking algorithm to fill the rest of the grid
     int row, col;
 
@@ -87,14 +90,29 @@ bool Game::fillRest() {
     }
 
     for (int num = 1; num <= GRID_SIZE; num++) {
-        if (!rowContains(row, num) && !colContains(col, num) && !boxContains(row, col, num)) {
-            grid[row][col] = num;
-            if (fillRest()) return true;
-            grid[row][col] = 0;
+        if (!rowContains(row, num, checkGrid) && !colContains(col, num, checkGrid) &&
+            !boxContains(row, col, num, checkGrid)) {
+            checkGrid[row][col] = num;
+            if (fillRest(checkGrid)) return true;
+            checkGrid[row][col] = 0;
         }
     }
 
     return false;
+}
+
+
+bool Game::solvable() {
+    // create a copy so the grid is not edited
+    int copy[GRID_SIZE][GRID_SIZE];
+
+    for (int i = 0; i < GRID_SIZE; i++) {
+        for (int j = 0; j < GRID_SIZE; j++) {
+            copy[i][j] = grid[i][j];
+        }
+    }
+
+    return !fillRest(copy);
 }
 
 void Game::initGrid() {
@@ -113,7 +131,25 @@ void Game::initGrid() {
     }
 
     // use a backtracking algorithm to fill the rest of the puzzle
-   if(!fillRest()) std::cerr << "could not generate the grid" << std::cout;
+    if (!fillRest(grid)) std::cerr << "could not generate the grid" << std::cout;
+
+    // remove some numbers so game is playable
+    int tryRemove = 30;
+    while (tryRemove > 0) {
+        int row = rand() % GRID_SIZE;
+        int col = rand() % GRID_SIZE;
+
+        if (grid[row][col] != 0) {
+            int temp = grid[row][col];
+            grid[row][col] = 0;
+
+            if (!solvable()) {
+                grid[row][col] = temp;
+            }
+
+            tryRemove--;
+        }
+    }
 }
 
 void Game::drawGrid() {

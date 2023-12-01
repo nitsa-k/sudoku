@@ -8,6 +8,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include <array>
+
 #define GRID_SIZE 9     // must be a perfect square - 9 for standard sudoku
 #define SCREEN_SIZE (750 / GRID_SIZE * GRID_SIZE)
 #define CELL_SIZE (SCREEN_SIZE / GRID_SIZE)
@@ -25,15 +27,17 @@ public:
 
     void fillBox(int row, int col);
 
-    bool rowContains(int row, int num);
+    bool rowContains(int row, int num, int checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool colContains(int col, int num);
+    bool colContains(int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool boxContains(int row, int col, int num);
+    bool boxContains(int row, int col, int num, int checkGrid[GRID_SIZE][GRID_SIZE]);
 
     bool findEmpty(int &row, int &col);
 
-    bool fillRest();
+    bool fillRest(int checkGrid[GRID_SIZE][GRID_SIZE]);
+
+    bool solvable();
 
     void initGrid();
 
