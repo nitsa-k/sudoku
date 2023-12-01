@@ -22,6 +22,9 @@ private:
 
     int grid[GRID_SIZE][GRID_SIZE];
 
+    int selectedRow;
+    int selectedCol;
+
 public:
     Game();
 
@@ -40,6 +43,10 @@ public:
     bool solvable();
 
     void initGrid();
+
+    void selectBox(int x, int y);
+
+    void typeNum(SDL_Keycode key);
 
     void drawGrid();
 

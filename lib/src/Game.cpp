@@ -20,6 +20,10 @@ Game::Game() {
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     srand(seed);
+
+    selectedRow = -1;
+    selectedCol = -1;
+
     initGrid();
 }
 
@@ -116,9 +120,6 @@ bool Game::solvable() {
 }
 
 void Game::initGrid() {
-    // for now, just randomly generates a complete (valid) sudoku grid
-    // TODO: design a method to remove some numbers such that the game is playable
-
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
             grid[i][j] = 0;
@@ -134,7 +135,8 @@ void Game::initGrid() {
     if (!fillRest(grid)) std::cerr << "could not generate the grid" << std::cout;
 
     // remove some numbers so game is playable
-    int tryRemove = 30;
+    // TODO: fix the segfault that sometimes gets thrown
+    int tryRemove = GRID_SIZE;
     while (tryRemove > 0) {
         int row = rand() % GRID_SIZE;
         int col = rand() % GRID_SIZE;
@@ -149,6 +151,17 @@ void Game::initGrid() {
 
             tryRemove--;
         }
+    }
+}
+
+void Game::selectBox(int x, int y) {
+    selectedRow = y / CELL_SIZE;
+    selectedCol = x / CELL_SIZE;
+}
+
+void Game::typeNum(SDL_Keycode key) {
+    if (selectedRow != -1 && selectedCol != -1 && key >= SDLK_1 && key <= SDLK_9) {
+        grid[selectedRow][selectedCol] = key - SDLK_0;
     }
 }
 
@@ -203,6 +216,14 @@ void Game::run() {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 exit = true;
+            } else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (e.button.button == SDL_BUTTON_LEFT) {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    selectBox(x, y);
+                }
+            } else if (e.type == SDL_KEYDOWN) {
+                typeNum(e.key.keysym.sym);
             }
         }
 
