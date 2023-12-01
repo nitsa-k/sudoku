@@ -8,8 +8,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#define SCREEN_SIZE 750
-#define GRID_SIZE 9
+#define GRID_SIZE 4
+#define SCREEN_SIZE (750 / GRID_SIZE * GRID_SIZE)
 #define CELL_SIZE (SCREEN_SIZE / GRID_SIZE)
 
 class Game {

@@ -18,13 +18,13 @@ void Game::drawGrid() {
     // set color to black to draw the grid
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-    // draw the 9 x 9 sudoku grid
+    // draw the sudoku grid
     for (int i = 0; i <= GRID_SIZE; ++i) {
         SDL_RenderDrawLine(renderer, i * CELL_SIZE, 0, i * CELL_SIZE, SCREEN_SIZE);
         SDL_RenderDrawLine(renderer, 0, i * CELL_SIZE, SCREEN_SIZE, i * CELL_SIZE);
 
-        // draw thicker lines to distinguish 3x3 boxes
-        if (i % 3 == 0) {
+        // draw thicker lines to distinguish boxes
+        if (i % ((int) sqrt(GRID_SIZE)) == 0) {
             SDL_Rect vertLine = {i * CELL_SIZE, 0, 5, SCREEN_SIZE};
             SDL_RenderFillRect(renderer, &vertLine);
 
