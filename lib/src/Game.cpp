@@ -289,4 +289,6 @@ void Game::run() {
             handleWin();
         }
     }
+
+    SDL_Quit();
 }
