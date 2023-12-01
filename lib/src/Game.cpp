@@ -144,9 +144,11 @@ void Game::initGrid() {
         if (grid[row][col].getValue() != 0) {
             Cell temp = grid[row][col];
             grid[row][col].setValue(0);
+            grid[row][col].setEditable(true);
 
             if (!solvable()) {
                 grid[row][col] = temp;
+                grid[row][col].setEditable(false);
             }
 
             tryRemove--;
@@ -160,7 +162,8 @@ void Game::selectBox(int x, int y) {
 }
 
 void Game::typeNum(SDL_Keycode key) {
-    if (selectedRow != -1 && selectedCol != -1 && key >= SDLK_1 && key <= SDLK_9) {
+    if (selectedRow != -1 && selectedCol != -1 && key >= SDLK_1 && key <= SDLK_9 &&
+        grid[selectedRow][selectedCol].getEditable()) {
         grid[selectedRow][selectedCol].setValue(key - SDLK_0);
     }
 }
@@ -193,7 +196,16 @@ void Game::drawGrid() {
         for (int col = 0; col < GRID_SIZE; col++) {
             if (grid[row][col].getValue() != 0) {
                 std::string val = std::to_string(grid[row][col].getValue());
-                SDL_Color textColor = {204, 139, 134};
+                SDL_Color textColor;
+                if (grid[row][col].getEditable()) {
+                    textColor.r = 70;
+                    textColor.g = 130;
+                    textColor.b = 180;
+                } else {
+                    textColor.r = 204;
+                    textColor.g = 139;
+                    textColor.b = 134;
+                }
                 SDL_Surface *surfaceMessage = TTF_RenderText_Solid(font, val.c_str(), textColor);
                 SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
                 SDL_Rect messageRect = {col * CELL_SIZE + CELL_SIZE / 4, row * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2,
