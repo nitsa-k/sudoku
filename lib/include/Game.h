@@ -29,6 +29,8 @@ public:
 
     bool colContains(int col, int num);
 
+    bool boxContains(int row, int col, int num);
+
     void fillRest();
 
     void initGrid();

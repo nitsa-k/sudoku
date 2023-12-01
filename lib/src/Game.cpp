@@ -55,11 +55,27 @@ bool Game::colContains(int col, int num) {
     return value;
 }
 
+bool Game::boxContains(int row, int col, int num) {
+    bool value = false;
+
+    // find the top left of the box that grid[row][col] is in
+    int topRow = (int) ((row / sqrt(GRID_SIZE)) * sqrt(GRID_SIZE));
+    int leftCol = (int) ((col / sqrt(GRID_SIZE)) * sqrt(GRID_SIZE));
+
+    for (int i = 0; i < sqrt(GRID_SIZE); i++) {
+        for (int j = 0; j < sqrt(GRID_SIZE); j++) {
+            if(grid[topRow + i][leftCol + j] == num) value = true;
+        }
+    }
+
+    return value;
+}
+
 void Game::fillRest() {
     for (int row = 0; row < GRID_SIZE; row++) {
         for (int col = 0; col < GRID_SIZE; col++) {
             for (int num = 1; num <= GRID_SIZE; num++) {
-                if (!rowContains(row, num) && !colContains(col, num)) {
+                if (!rowContains(row, num) && !colContains(col, num) && !boxContains(row, col, num)) {
                     grid[row][col] = num;
                     break;
                 }
