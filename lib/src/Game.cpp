@@ -27,7 +27,7 @@ Game::Game() {
     selectedCol = -1;
 }
 
-void Game::saveGame(const std::string& filename) {
+void Game::saveGame(const std::string &filename) {
     std::ofstream file(filename);
 
     if (!file.is_open()) {
@@ -40,7 +40,7 @@ void Game::saveGame(const std::string& filename) {
     file.close();
 }
 
-void Game::loadGame(const std::string& filename) {
+void Game::loadGame(const std::string &filename) {
     std::ifstream file(filename);
 
     if (!file.is_open()) {
@@ -292,13 +292,51 @@ void Game::handleWin() {
     }
 }
 
+int Game::showMenu() {
+    const SDL_MessageBoxButtonData buttons[] = {
+            {0,                                       0, "New Game"},
+            {0,                                       1, "Load Game"},
+            {0,                                       2, "Save Game"},
+            {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 3, "Exit"}
+    };
+
+    const SDL_MessageBoxData data = {
+            SDL_MESSAGEBOX_INFORMATION, window, "Menu",
+            "Choose an option:", SDL_arraysize(buttons), buttons, nullptr
+    };
+
+    int choice;
+    SDL_ShowMessageBox(&data, &choice);
+    return choice;
+}
+
 void Game::run() {
-    initGrid();
-
-    SDL_Event e;
-
     bool exit = false;
+    bool menu = true;
+
     while (!exit) {
+        if (menu) {
+            int choice = showMenu();
+            switch (choice) {
+                case 0:
+                    initGrid();
+                    break;
+                case 1:
+                    this->loadGame("save.txt");
+                    break;
+                case 2:
+                    saveGame("save.txt");
+                    break;
+                case 3:
+                    exit = true;
+                    break;
+                default:
+                    break;
+            }
+
+            menu = false;
+        }
+        SDL_Event e;
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 exit = true;
@@ -309,15 +347,18 @@ void Game::run() {
                     selectBox(x, y);
                 }
             } else if (e.type == SDL_KEYDOWN) {
-                typeNum(e.key.keysym.sym);
+                if (e.key.keysym.sym == SDLK_m) {
+                    menu = !menu;
+                } else {
+                    typeNum(e.key.keysym.sym);
+                }
             }
         }
 
         drawGrid();
-        if (checkWin()) {
-            handleWin();
-        }
+        if (checkWin()) handleWin();
     }
-
     SDL_Quit();
 }
+
+

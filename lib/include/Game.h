@@ -68,6 +68,8 @@ public:
 
     void handleWin();
 
+    int showMenu();
+
     void run();
 };
 
