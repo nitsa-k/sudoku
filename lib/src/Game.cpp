@@ -4,7 +4,9 @@
 
 #include "../include/Game.h"
 
+#include <string>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 #include <random>
@@ -24,6 +26,33 @@ Game::Game() {
     selectedRow = -1;
     selectedCol = -1;
 }
+
+void Game::saveGame(const std::string& filename) {
+    std::ofstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file for saving." << std::endl;
+        return;
+    }
+
+    boost::archive::text_oarchive archive(file);
+    archive << *this;
+    file.close();
+}
+
+void Game::loadGame(const std::string& filename) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file for loading." << std::endl;
+        return;
+    }
+
+    boost::archive::text_iarchive archive(file);
+    archive >> *this;
+    file.close();
+}
+
 
 void Game::fillBox(int row, int col) {
     std::vector<int> nums;
