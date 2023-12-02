@@ -13,7 +13,8 @@
 #include <chrono>
 
 Game::Game() {
-    window = SDL_CreateWindow("Sudoku", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_SIZE, SCREEN_SIZE,SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Sudoku", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_SIZE, SCREEN_SIZE,
+                              SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     TTF_Init();
@@ -145,8 +146,8 @@ bool Game::solvable() {
 }
 
 void Game::initGrid() {
-    for (auto & i : grid) {
-        for (auto & j : i) {
+    for (auto &i: grid) {
+        for (auto &j: i) {
             j.setValue(0);
             j.setEditable(false);
         }
@@ -295,7 +296,8 @@ int Game::showMenu() {
             {0,                                       0, "New Game"},
             {0,                                       1, "Load Game"},
             {0,                                       2, "Save Game"},
-            {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 3, "Exit"}
+            {0,                                       3, "Solver Mode"},
+            {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 4, "Exit"}
     };
 
     const SDL_MessageBoxData data = {
@@ -311,6 +313,7 @@ int Game::showMenu() {
 void Game::run() {
     bool exit = false;
     bool menu = true;
+    bool solveMode = false;
 
     while (!exit) {
         if (menu) {
@@ -326,6 +329,14 @@ void Game::run() {
                     saveGame("save.txt");
                     break;
                 case 3:
+                    solveMode = true;
+                    for (int i = 0; i < GRID_SIZE; i++) {
+                        for (int j = 0; j < GRID_SIZE; j++) {
+                            grid[i][j].setEditable(true);
+                        }
+                    }
+                    break;
+                case 4:
                     exit = true;
                     break;
                 default:
@@ -347,6 +358,8 @@ void Game::run() {
             } else if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_m) {
                     menu = !menu;
+                } else if (solveMode && e.key.keysym.sym == SDLK_RETURN) {
+                    if (!fillRest(grid)) std::cerr << "unsolvable" << std::endl;
                 } else {
                     typeNum(e.key.keysym.sym);
                 }
@@ -354,7 +367,7 @@ void Game::run() {
         }
 
         drawGrid();
-        if (checkWin()) handleWin();
+        if (!solveMode && checkWin()) handleWin();
     }
     SDL_Quit();
 }
