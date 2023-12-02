@@ -13,8 +13,7 @@
 #include <chrono>
 
 Game::Game() {
-    window = SDL_CreateWindow("Sudoku", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_SIZE, SCREEN_SIZE,
-                              SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Sudoku", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_SIZE, SCREEN_SIZE,SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     TTF_Init();
@@ -52,7 +51,6 @@ void Game::loadGame(const std::string &filename) {
     archive >> *this;
     file.close();
 }
-
 
 void Game::fillBox(int row, int col) {
     std::vector<int> nums;
@@ -147,10 +145,10 @@ bool Game::solvable() {
 }
 
 void Game::initGrid() {
-    for (int i = 0; i < GRID_SIZE; i++) {
-        for (int j = 0; j < GRID_SIZE; j++) {
-            grid[i][j].setValue(0);
-            grid[i][j].setEditable(false);
+    for (auto & i : grid) {
+        for (auto & j : i) {
+            j.setValue(0);
+            j.setEditable(false);
         }
     }
 
@@ -360,5 +358,3 @@ void Game::run() {
     }
     SDL_Quit();
 }
-
-

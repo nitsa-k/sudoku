@@ -44,11 +44,11 @@ public:
 
     void fillBox(int row, int col);
 
-    bool rowContains(int row, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    static bool rowContains(int row, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool colContains(int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    static bool colContains(int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    static bool boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
     bool findEmpty(int &row, int &col);
 
