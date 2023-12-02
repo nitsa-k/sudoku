@@ -18,7 +18,7 @@ Game::Game() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     TTF_Init();
-    font = TTF_OpenFont("../../resources/PlayfairDisplaySemibold.ttf", 25);
+    font = TTF_OpenFont("../../resources/ABeeZee-Regular.otf", 25);
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     srand(seed);
@@ -196,12 +196,12 @@ void Game::typeNum(SDL_Keycode key) {
 }
 
 void Game::drawGrid() {
-    // make the whole screen white
-    SDL_SetRenderDrawColor(renderer, 249, 222, 234, 225);
+    // screen color
+    SDL_SetRenderDrawColor(renderer, 237, 246, 249, 225);
     SDL_RenderClear(renderer);
 
-    // set color to black to draw the grid
-    SDL_SetRenderDrawColor(renderer, 204, 139, 134, 255);
+    // grid color
+    SDL_SetRenderDrawColor(renderer, 0, 109, 119, 255);
 
     // draw the sudoku grid
     for (int i = 0; i <= GRID_SIZE; ++i) {
@@ -225,13 +225,13 @@ void Game::drawGrid() {
                 std::string val = std::to_string(grid[row][col].getValue());
                 SDL_Color textColor;
                 if (grid[row][col].getEditable()) {
-                    textColor.r = 70;
-                    textColor.g = 130;
-                    textColor.b = 180;
+                    textColor.r = 131;
+                    textColor.g = 197;
+                    textColor.b = 190;
                 } else {
-                    textColor.r = 204;
-                    textColor.g = 139;
-                    textColor.b = 134;
+                    textColor.r = 0;
+                    textColor.g = 109;
+                    textColor.b = 119;
                 }
                 SDL_Surface *surfaceMessage = TTF_RenderText_Solid(font, val.c_str(), textColor);
                 SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
@@ -246,7 +246,7 @@ void Game::drawGrid() {
 
     // draw selected cell
     if (selectedRow != -1 && selectedCol != -1) {
-        SDL_SetRenderDrawColor(renderer, 70, 130, 180, 255);
+        SDL_SetRenderDrawColor(renderer, 131, 197, 190, 255);
         SDL_Rect selected = {selectedCol * CELL_SIZE, selectedRow * CELL_SIZE, CELL_SIZE, CELL_SIZE};
         SDL_RenderDrawRect(renderer, &selected);
     }
@@ -330,9 +330,10 @@ void Game::run() {
                     break;
                 case 3:
                     solveMode = true;
-                    for (int i = 0; i < GRID_SIZE; i++) {
-                        for (int j = 0; j < GRID_SIZE; j++) {
-                            grid[i][j].setEditable(true);
+                    for (auto &i: grid) {
+                        for (auto &j: i) {
+                            j.setValue(0);
+                            j.setEditable(true);
                         }
                     }
                     break;
