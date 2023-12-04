@@ -11,7 +11,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include "Cell.h"
 
-#define GRID_SIZE 4     // must be a perfect square - 9 for standard sudoku
+#define GRID_SIZE 9     // must be a perfect square - 9 for standard sudoku
 #define SCREEN_SIZE (750 / GRID_SIZE * GRID_SIZE)
 #define CELL_SIZE (SCREEN_SIZE / GRID_SIZE)
 

@@ -164,7 +164,7 @@ void Game::initGrid() {
     if (!fillRest(grid)) std::cerr << "could not generate the grid" << std::cout;
 
     // remove some numbers so game is playable
-    int tryRemove = GRID_SIZE * 2;
+    int tryRemove = GRID_SIZE * 3;
     while (tryRemove > 0) {
         int row = rand() % GRID_SIZE;
         int col = rand() % GRID_SIZE;
