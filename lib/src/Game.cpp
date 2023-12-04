@@ -102,10 +102,10 @@ bool Game::boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID
 }
 
 
-bool Game::findEmpty(int &row, int &col) {
+bool Game::findEmpty(int &row, int &col, Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
     for (row = 0; row < GRID_SIZE; row++) {
         for (col = 0; col < GRID_SIZE; col++) {
-            if (grid[row][col].getValue() == 0) return true;
+            if (checkGrid[row][col].getValue() == 0) return true;
         }
     }
     return false;
@@ -115,7 +115,7 @@ bool Game::fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
     // uses a backtracking algorithm to fill the rest of the grid
     int row, col;
 
-    if (!findEmpty(row, col)) {
+    if (!findEmpty(row, col, checkGrid)) {
         return true;
     }
 
@@ -142,7 +142,7 @@ bool Game::solvable() {
         }
     }
 
-    return !fillRest(copy);
+    return fillRest(copy);
 }
 
 void Game::initGrid() {
@@ -154,16 +154,17 @@ void Game::initGrid() {
     }
 
     // fill diagonal boxes with numbers
-    for (int i = 0; i < GRID_SIZE; i += (int) sqrt(GRID_SIZE)) {
-        fillBox(i, i);
+    if (GRID_SIZE > 4) {
+        for (int i = 0; i < GRID_SIZE; i += (int) sqrt(GRID_SIZE)) {
+            fillBox(i, i);
+        }
     }
 
     // use a backtracking algorithm to fill the rest of the puzzle
     if (!fillRest(grid)) std::cerr << "could not generate the grid" << std::cout;
 
     // remove some numbers so game is playable
-    // TODO: fix the segfault that sometimes gets thrown
-    int tryRemove = GRID_SIZE;
+    int tryRemove = GRID_SIZE * 2;
     while (tryRemove > 0) {
         int row = rand() % GRID_SIZE;
         int col = rand() % GRID_SIZE;

@@ -10,9 +10,8 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include "Cell.h"
-#include <vector>
 
-#define GRID_SIZE 9     // must be a perfect square - 9 for standard sudoku
+#define GRID_SIZE 4     // must be a perfect square - 9 for standard sudoku
 #define SCREEN_SIZE (750 / GRID_SIZE * GRID_SIZE)
 #define CELL_SIZE (SCREEN_SIZE / GRID_SIZE)
 
@@ -51,7 +50,7 @@ public:
 
     static bool boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
-    bool findEmpty(int &row, int &col);
+    bool findEmpty(int &row, int &col, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
     bool fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]);
 
