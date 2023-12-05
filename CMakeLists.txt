@@ -6,7 +6,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(COPY resources DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMAKE")
-set(SOURCE_FILES    main.cpp lib/src/Game.cpp lib/include/Game.h
+set(SOURCE_FILES main.cpp lib/src/Game.cpp lib/include/Game.h
         lib/include/Cell.h
         lib/src/Cell.cpp)
 ADD_EXECUTABLE(sudoku ${SOURCE_FILES})

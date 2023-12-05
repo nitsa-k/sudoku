@@ -22,15 +22,15 @@ private:
     bool editable;
 
 public:
-    Cell();
+    Cell(); // constructor
 
-    int getValue();
+    int getValue(); // returns the value of the cell
 
-    void setValue(int num);
+    void setValue(int num); // sets the value of the cell
 
-    bool getEditable();
+    bool getEditable(); // is this cell editable?
 
-    void setEditable(bool value);
+    void setEditable(bool value);   // sets the editable field of the cell
 };
 
 #endif //SUDOKU_CELL_H

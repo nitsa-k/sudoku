@@ -36,41 +36,47 @@ private:
     int selectedCol;
 
 public:
-    Game();
+    Game(); // constructor
 
-    void saveGame(const std::string &filename);
+    void saveGame(const std::string &filename) const;   // serializes & saves game state
 
-    void loadGame(const std::string &filename);
+    void loadGame(const std::string &filename); // loads previously saved game state
 
-    void fillBox(int row, int col);
+    static bool rowContains(int row, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);    // checks if given row
+                                                                                        // contains given number
 
-    static bool rowContains(int row, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    static bool colContains(int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);    // checks if given column
+                                                                                        // contains given number
 
-    static bool colContains(int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    static bool boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);   // checks if box of
+                                                                                                // the given [row][col]
+                                                                                                // coordinate contains
+                                                                                                // given number
 
-    static bool boxContains(int row, int col, int num, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    static bool findEmpty(int &row, int &col, Cell checkGrid[GRID_SIZE][GRID_SIZE]);    // finds an empty cell in the
+                                                                                        // grid
 
-    bool findEmpty(int &row, int &col, Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    bool fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]);    // fills any empty cells in the grid
 
-    bool fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]);
+    void fillBox(int row, int col); // fills a GRID_SIZE x GRID_SIZE box randomly
 
-    bool solvable();
+    bool solvable();    // checks if grid is solvable
 
-    void initGrid();
+    void initGrid();    // initializes grid
 
-    void selectBox(int x, int y);
+    void selectBox(int x, int y);   // updates selected row and column with user click
 
-    void typeNum(SDL_Keycode key);
+    void typeNum(SDL_Keycode key);  // updates selected cell with user entered number if the cell is editable
 
-    void drawGrid();
+    void drawGrid();    // draws the grid
 
-    bool checkWin();
+    bool checkWin();    // checks if game has been won
 
-    void handleWin();
+    void handleWin();   // displays winning game scene and allows user to exit or play again
 
-    int showMenu();
+    int showMenu(); // displays options menu
 
-    void run();
+    void run(); // launches and runs the game
 };
 
 #endif //SUDOKU_GAME_H
