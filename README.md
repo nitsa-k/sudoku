@@ -40,14 +40,20 @@ code at the links below:
 
 Some screenshots of the program in action!!
 
-![Menu](images/Screenshot%202023-12-04%20at%2010.31.03%20PM.png?raw=true)
+**Menu when you first launch the program:**
+![Menu](images/menu.png?raw=true)
 
-![Classic 9x9 New Puzzle](images/Screenshot%202023-12-04%20at%2010.30.19%20PM.png?raw=true)
+**Randomly generated 9x9 puzzle:**
+![Classic 9x9 New Puzzle](images/newgame.png?raw=true)
 
-![Playing the Game](images/Screenshot%202023-12-04%20at%2010.30.35%20PM.png?raw=true)
+**Puzzle with some user inputs:**
+![Playing the Game](images/playinggame.png?raw=true)
 
-![Winning the Game](images/Screenshot%202023-12-04%20at%2010.31.03%20PM.png?raw=true)
+**Game won pop-up menu:**
+![Winning the Game](images/wingame.png?raw=true)
 
-![Solver Mode Input](images/Screenshot%202023-12-04%20at%2010.32.22%20PM.png?raw=true)
+**User input to solver mode:**
+![Solver Mode Input](images/solverinput.png?raw=true)
 
-![Solver Mode Output](images/Screenshot%202023-12-04%20at%2010.32.39%20PM.png?raw=true)
+**Associated program output from solver mode:**
+![Solver Mode Output](images/solveroutput.png?raw=true)
