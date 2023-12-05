@@ -25,8 +25,8 @@ Running the program should prompt you with a menu, where you can decide what you
 
 You can access this menu at any time by typing `m` on your keyboard!
 
-**NOTE:** If you'd like to change the size of the puzzles you're playing, simply redefine the GRID_SIZE constant at the
-top of Game.cpp to any perfect square greater than or equal to 4
+**NOTE:** If you'd like to change the size of the puzzles you're playing, simply redefine the `GRID_SIZE` constant at
+the top of Game.cpp to any perfect square greater than or equal to 4.
 
 ## Any dependencies?
 
@@ -40,21 +40,14 @@ code at the links below:
 
 Some screenshots of the program in action!!
 
-[Menu](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F0r%2Fjv_m62bj4rq36wf4d2cc52100000gn%2FT%2FTemporaryItems
-%2FNSIRD_screencaptureui_aqZXTc%2FScreenshot%202023-12-04%20at%2010.22.44%20PM.png)
+![Menu](images/Screenshot%202023-12-04%20at%2010.31.03%20PM.png?raw=true)
 
-![Classic 9x9 New Puzzle](..%2F..%2F..%2F..%2F..
-%2Fvar%2Ffolders%2F0r%2Fjv_m62bj4rq36wf4d2cc52100000gn%2FT%2FTemporaryItems
-%2FNSIRD_screencaptureui_Uzt3PO%2FScreenshot%202023-12-04%20at%2010.23.49%20PM.png)
+![Classic 9x9 New Puzzle](images/Screenshot%202023-12-04%20at%2010.30.19%20PM.png?raw=true)
 
-![Playing the Game](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F0r%2Fjv_m62bj4rq36wf4d2cc52100000gn%2FT%2FTemporaryItems
-%2FNSIRD_screencaptureui_vs5Lh2%2FScreenshot%202023-12-04%20at%2010.24.39%20PM.png)
+![Playing the Game](images/Screenshot%202023-12-04%20at%2010.30.35%20PM.png?raw=true)
 
-![Winning the Game](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F0r%2Fjv_m62bj4rq36wf4d2cc52100000gn%2FT%2FTemporaryItems
-%2FNSIRD_screencaptureui_IXUWEt%2FScreenshot%202023-12-04%20at%2010.25.05%20PM.png)
+![Winning the Game](images/Screenshot%202023-12-04%20at%2010.31.03%20PM.png?raw=true)
 
-![Solver Mode Input](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F0r%2Fjv_m62bj4rq36wf4d2cc52100000gn%2FT%2FTemporaryItems
-%2FNSIRD_screencaptureui_cqIYVm%2FScreenshot%202023-12-04%20at%2010.26.25%20PM.png)
+![Solver Mode Input](images/Screenshot%202023-12-04%20at%2010.32.22%20PM.png?raw=true)
 
-![Solver Mode Output](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F0r%2Fjv_m62bj4rq36wf4d2cc52100000gn%2FT%2FTemporaryItems
-%2FNSIRD_screencaptureui_FFD3H5%2FScreenshot%202023-12-04%20at%2010.26.49%20PM.png)
+![Solver Mode Output](images/Screenshot%202023-12-04%20at%2010.32.39%20PM.png?raw=true)
