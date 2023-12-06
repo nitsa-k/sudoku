@@ -123,7 +123,7 @@ bool Game::fillRest(Cell checkGrid[GRID_SIZE][GRID_SIZE]) {
             !boxContains(row, col, num, checkGrid)) {
             checkGrid[row][col].setValue(num);  // test a value
             if (fillRest(checkGrid)) return true;   // check if rest of grid can be validly filled if this cell is
-                                                    // given this value
+            // given this value
             checkGrid[row][col].setValue(0);    // revert back to zero - tested value did not result in valid grid
         }
     }
@@ -372,7 +372,7 @@ void Game::run() {
                     break;
                 case 4:
                     exit = true;
-                    break;
+                    continue;
                 default:
                     break;
             }
